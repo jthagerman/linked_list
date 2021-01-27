@@ -13,7 +13,6 @@ class Linked_list
             @head = value   
             @tail = value   
         else 
-
             @tail.next_node = value
             @tail = value   
         end      
@@ -54,21 +53,91 @@ class Linked_list
         end     
     end
 
-
+     #returns the node at the given index
     def at(index) 
-        #returns the node at the given index
+        if(index == 0)
+            return @head
+        end
+        count = 0
+        node = @head
+        while(node.next_node != nil)
+            node = node.next_node
+            count += 1
+            if(count == index)
+                return node
+            end
+        end
+        return nil
     end
 
+    #removes the last element from the list
     def pop 
-        #removes the last element from the list
+        node = @head
+        while(node.next_node != @tail)
+            node = node.next_node
+        end
+        @tail = node
+        @tail.next_node = nil 
     end
     
+    #returns true if the passed in value is in the list and otherwise returns false.
     def contains?(value) 
-        #returns true if the passed in value is in the list and otherwise returns false.
+        node = @head
+        while(node.value != value)
+            node = node.next_node
+            if(node == @tail) && (node.value != value)
+                return false
+            end
+        end
+        return true
     end
 
+     #returns the index of the node containing value, or nil if not found.
     def find(value) 
-        #returns the index of the node containing value, or nil if not found.
+        index = 0
+        node = @head
+        while(node.value != value)
+            node = node.next_node
+            index += 1
+            if(node.value == value)
+                return index
+            end
+            if(node == @tail) && (node.value != value)
+                return nil
+            end
+        end
+        return 0    
+    end
+
+    def insert_at(value, index)
+        node = @head
+        count = 0
+        if(index == 0)
+            value.next_node = @head
+            @head = value
+        else
+            puts size()
+            if(index > size())
+                puts "out of bounds"
+            else
+                while(node.next_node != nil)
+                                     
+                    node = node.next_node
+                    count += 1
+                    if(count == index-1)
+                        if(node == @tail)
+                            @tail.next_node = value
+                            @tail = value  
+                            break 
+                        end
+                        next_n = node.next_node
+                        node.next_node = value
+                        value.next_node = next_n
+                        break
+                    end
+                end
+            end
+        end
     end
 
     def to_s
@@ -80,29 +149,5 @@ class Linked_list
         end
         str += "( #{@tail} ) -> nil"
         return str
-        #represent your LinkedList objects as strings, so you can print them out and preview them in the console. The format should be: ( value ) -> ( value ) -> ( value ) -> nil
     end
-
 end
-
-
-a = Node.new("node 1")
-c = Node.new("node 2")
-f = Node.new('hello')
-g = Node.new('node 0')
-
-list = Linked_list.new()
-list.append(a)
-list.append(c)
-list.append(f)
-
-puts list.head
-puts list.tail
-
-list.prepend(g)
-
-puts list.head
-puts list.tail
-puts list.size
-
-puts list
